@@ -1,5 +1,7 @@
 const fs = require("fs");
 const http = require("http");
+const url = require("url");
+
 //////////////////////////////
 // blocking synchronous way
 // const name = "jovia";
@@ -37,9 +39,33 @@ const http = require("http");
 //////////////////////////
 //SERVER
 //create a server that listens to j=http requests
+// const server = http.createServer((req, res) => {
+//   console.log(req);
+//   res.end("Listening on port 8000, hello from the server");
+// });
+// server.listen(8000, "127.0.0.1", () => {
+//   console.log("Listening to requests on port 8000");
+// });
+
+//Routing using URL
 const server = http.createServer((req, res) => {
-  console.log(req);
-  res.end("Listening on port 8000, hello from the server");
+  // console.log(req.url);
+  //implementing routing using the if
+  const pathName = req.url;
+
+  if (pathName === "/" || pathName === "/home") {
+    res.end("this is the Home Page");
+  } else if (pathName === "/product") {
+    res.end("this is the Product");
+  } else if (pathName == "/recipes") {
+    res.end("Wrong pathname");
+  } else {
+    res.writeHead(404, {
+      "Content-type": "text/html",
+      "my-own-header": "customised html in node",
+    });
+    res.end("Page not found");
+  }
 });
 server.listen(8000, "127.0.0.1", () => {
   console.log("Listening to requests on port 8000");
